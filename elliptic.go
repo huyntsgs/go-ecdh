@@ -46,16 +46,27 @@ func (e *ellipticECDH) GenerateKey(rand io.Reader) (crypto.PrivateKey, crypto.Pu
 	}
 	pub = &ellipticPublicKey{
 		Curve: e.curve,
-		X: x,
-		Y: y,
+		X:     x,
+		Y:     y,
 	}
-	
+
 	return priv, pub, nil
 }
 
 func (e *ellipticECDH) Marshal(p crypto.PublicKey) []byte {
 	pub := p.(*ellipticPublicKey)
 	return elliptic.Marshal(e.curve, pub.X, pub.Y)
+}
+
+func (e *ellipticECDH) UnmarshalPrivateKey(data []byte) crypto.PrivateKey {
+	priv := &ellipticPrivateKey{data}
+
+	return crypto.PrivateKey(priv)
+}
+
+func (e *ellipticECDH) MarshalPrivateKey(p crypto.PrivateKey) []byte {
+	priv := p.(*ellipticPrivateKey)
+	return priv.D
 }
 
 func (e *ellipticECDH) Unmarshal(data []byte) (crypto.PublicKey, bool) {
