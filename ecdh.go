@@ -13,4 +13,5 @@ type ECDH interface {
 	Unmarshal([]byte) (crypto.PublicKey, bool)
 	UnmarshalPrivateKey(data []byte) crypto.PrivateKey
 	GenerateSharedSecret(crypto.PrivateKey, crypto.PublicKey) ([]byte, error)
+	GenSharedSecret32(privKey crypto.PrivateKey, pubKey crypto.PublicKey) ([]byte, error)
 }

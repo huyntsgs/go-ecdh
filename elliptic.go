@@ -96,3 +96,21 @@ func (e *ellipticECDH) GenerateSharedSecret(privKey crypto.PrivateKey, pubKey cr
 	x, _ := e.curve.ScalarMult(pub.X, pub.Y, priv.D)
 	return x.Bytes(), nil
 }
+
+func (e *ellipticECDH) GenSharedSecret32(privKey crypto.PrivateKey, pubKey crypto.PublicKey) ([]byte, error) {
+	priv := privKey.(*ellipticPrivateKey)
+	pub := pubKey.(*ellipticPublicKey)
+
+	x, _ := e.curve.ScalarMult(pub.X, pub.Y, priv.D)
+
+	ret := x.Bytes()
+	if len(ret) > 32 {
+		ret = ret[0:32]
+	}
+	if len(ret) < 32 {
+		for i := 0; i < 32-len(ret); i++ {
+			ret = append(ret, 0x00)
+		}
+	}
+	return ret, nil
+}
