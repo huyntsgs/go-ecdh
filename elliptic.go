@@ -89,7 +89,7 @@ func (e *ellipticECDH) Unmarshal(data []byte) (crypto.PublicKey, bool) {
 // and generates a shared secret.
 //
 // RFC5903 Section 9 states we should only return x.
-func (e *ellipticECDH) GenerateSharedSecret(privKey crypto.PrivateKey, pubKey crypto.PublicKey) ([]byte, error) {
+func (e *ellipticECDH) GenSharedSecret(privKey crypto.PrivateKey, pubKey crypto.PublicKey) ([]byte, error) {
 	priv := privKey.(*ellipticPrivateKey)
 	pub := pubKey.(*ellipticPublicKey)
 
